@@ -69,7 +69,7 @@ Tip: seed a handful of approved businesses first (submit via the form, approve i
 
 - **Privacy policy URL** (mandatory): `https://albabiz.pages.dev/privatesia.html`
   (or `https://albabiz.ie/privatesia.html` once the domain is live).
-- **Support email:** ACAI's real address (e.g. `info@albabiz.ie`).
+- **Support email:** `info@acaireland.ie` (ACAI).
 - **Website:** `https://albabiz.pages.dev` (→ `https://albabiz.ie`).
 
 ---
@@ -82,7 +82,7 @@ Tip: seed a handful of approved businesses first (submit via the form, approve i
 - [ ] Data safety form completed (see `data-safety.md`).
 - [ ] Content rating questionnaire completed (see `content-rating.md`).
 - [ ] At least 4 screenshots + feature graphic + 512 icon uploaded.
-- [ ] Replace `privacy@albabiz.ie` placeholder in `privatesia.html` with ACAI's email.
+- [x] Privacy contact email in `privatesia.html` set to `info@acaireland.ie` (ACAI).
 - [ ] Target audience: **18+ / general** (no child-directed content).
 
 ---

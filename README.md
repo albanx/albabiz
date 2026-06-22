@@ -332,5 +332,5 @@ couldn't map.
 
 ## License / ownership
 
-Built for ACAI. Replace the placeholder contact email in `privatesia.html`
-(`privacy@albabiz.ie`) with ACAI's real address before launch.
+Built for ACAI. The privacy contact email in `privatesia.html` is
+`info@acaireland.ie` (ACAI's address).
