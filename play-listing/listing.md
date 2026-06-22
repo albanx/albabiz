@@ -42,10 +42,13 @@ AlbaBiz.ie is run by the Albanian Cultural Association Ireland (ACAI) to support
 and connect the Albanian community and its businesses across Ireland.
 ```
 
-**App icon:** 512×512 PNG (export from `android/app/src/main/res` adaptive icon, or
-design a flag-red "A" mark). Place final at `play-listing/icon-512.png`.
+**App icon:** ✅ `play-listing/icon-512.png` (512×512, flat) — generated from the
+AI brand art (white "A" + red keystone on flag-red). Also wired into the site
+favicons (`cloud/pages/icons/`) and Android launcher.
 
-**Feature graphic:** 1024×500 PNG → `play-listing/feature-1024x500.png`.
+**Feature graphic:** ✅ `play-listing/feature-1024x500.png` — warm cream banner
+with the "A" mark + Irish line-art (hills, road, shamrocks, harp, dolmen) and an
+Albanian eagle crest.
 
 ---
 

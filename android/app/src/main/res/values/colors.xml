@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="red">#D11F27</color>
-    <color name="red_dark">#A8161D</color>
-    <color name="ink">#1A1A1C</color>
-    <color name="muted">#6C6C74</color>
-    <color name="bg">#FFFFFF</color>
-    <color name="splash_bg">#D11F27</color>
-    <color name="ic_launcher_background">#D11F27</color>
+    <color name="red">#C8102E</color>
+    <color name="red_dark">#9E0C24</color>
+    <color name="ink">#1C1B19</color>
+    <color name="muted">#807A70</color>
+    <color name="bg">#FAF7F2</color>
+    <color name="splash_bg">#C8102E</color>
+    <color name="ic_launcher_background">#C8102E</color>
 </resources>
