@@ -90,6 +90,13 @@ h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; letter-spacing
 .brand .wordmark { font-family: var(--serif); font-weight: 600; font-size: 1.3rem; letter-spacing: -.02em; line-height: 1; }
 .brand .wordmark b { color: var(--red); font-weight: 600; }
 .brand small { display: block; font-family: var(--sans); font-weight: 500; color: var(--muted); font-size: .68rem; letter-spacing: .01em; margin-top: 3px; }
+/* On phones the tagline wraps to 3-4 cramped lines and crowds the header —
+   hide it; the wordmark + CTA carry the brand. Restored on wider screens. */
+@media (max-width: 560px) {
+  .brand small { display: none; }
+  .header-inner { gap: 10px; }
+  .brand .wordmark { font-size: 1.2rem; }
+}
 .header-spacer { flex: 1; }
 
 .lang-toggle { display: inline-flex; border: 1px solid var(--line-2); border-radius: 999px; overflow: hidden; background: var(--surface); }

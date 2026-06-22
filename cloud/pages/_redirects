@@ -1,17 +1,21 @@
 # Cloudflare Pages redirects / rewrites for the AlbaBiz SPA.
-# Clean deep links (/biznes/<slug>, /kategoria/<slug>, /kontea/<slug>,
-# /regjistro, /hiq) are handled client-side by app.js. On a hard refresh or
-# shared link, Pages must serve index.html (200 rewrite, NOT a 301) so the
-# router can take over. Real files (/styles.css, /app.js, /privatesia.html,
-# /admin/*) are served first because Pages matches static assets before these
-# rules.
+#
+# Pages serves real static files first (/styles.css, /app.js, /icons.js,
+# /metrics.js, /config.js, /i18n.js, /fonts/*, /privatesia.html, /brand-mark.svg,
+# /robots.txt, etc.), so those are unaffected by the rules below.
+#
+# For every OTHER path (the SPA's client-side routes: /biznes/<slug>,
+# /kategoria/<slug>, /kontea/<slug>, /regjistro, /hiq) we must serve the app
+# shell with a 200 *rewrite* (NOT a 3xx redirect) so the History-API router in
+# app.js can take over on a hard refresh or shared/deep link.
+#
+# Per-route rules proved unreliable: Pages' default trailing-slash handling
+# 308-redirected bare paths (e.g. /regjistro -> /) before an exact-match rule
+# could fire. A single catch-all is the robust SPA pattern.
 
-# Admin SPA keeps its own routing under /admin (protected by Cloudflare Access).
-/admin/*    /admin/index.html   200
+# Admin SPA keeps its own shell under /admin (gate with Cloudflare Access).
+/admin           /admin/index.html   200
+/admin/*         /admin/index.html   200
 
-# Everything else falls through to the public SPA shell.
-/biznes/*      /index.html   200
-/kategoria/*   /index.html   200
-/kontea/*      /index.html   200
-/regjistro     /index.html   200
-/hiq           /index.html   200
+# Public SPA: any unmatched path serves the public shell (200 rewrite).
+/*               /index.html         200
