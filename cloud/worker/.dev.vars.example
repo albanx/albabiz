@@ -1,0 +1,14 @@
+# Local dev secrets for `wrangler dev`. Copy to `.dev.vars` (gitignored).
+# These NEVER ship to production — production secrets are set with
+# `wrangler secret put NAME`.
+
+# Skip Turnstile verification locally (no widget on localhost). 1 = skip.
+DEV_SKIP_TURNSTILE=1
+
+# Treat all /api/admin/* requests as authenticated (as dev@localhost) so you
+# can build the admin panel without standing up Cloudflare Access first.
+# MUST remain unset / absent in production.
+DEV_ADMIN_BYPASS=1
+
+# If you want to test real Turnstile locally, set the secret instead:
+# TURNSTILE_SECRET=0x0000000000000000000000000000000000000000

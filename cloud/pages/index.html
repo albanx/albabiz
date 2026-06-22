@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>AlbaBiz.ie — Albanian Business Network Ireland</title>
+  <meta name="description" content="Drejtoria e bizneseve shqiptare në Irlandë — një projekt i ACAI. The directory of Albanian-owned businesses in Ireland." />
+  <meta name="theme-color" content="#c8102e" />
+  <link rel="icon" href="/brand-mark.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/brand-mark.svg" />
+
+  <!-- Open Graph (per-page values are overwritten by app.js) -->
+  <meta property="og:title" content="AlbaBiz.ie — Albanian Business Network Ireland" />
+  <meta property="og:description" content="Find Albanian-owned businesses in Ireland." />
+  <meta property="og:type" content="website" />
+
+  <!-- Self-hosted fonts: preload the two latin variable faces (GDPR-clean) -->
+  <link rel="preload" href="/fonts/fraunces-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Leaflet (map view) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Kalo te përmbajtja</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/" data-link aria-label="AlbaBiz.ie">
+        <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+          <path fill="#1C1B19" d="M24 5 7 41h8.4l3.05-6.8h11.1L32.6 41H41L24 5Zm-2.4 21.6L24 17.9l2.4 8.7h-4.8Z"/>
+          <path fill="#C8102E" d="M24 5l4.2 8.9a10 10 0 0 1-8.4 0L24 5Z"/>
+        </svg>
+        <span class="wordmark">Alba<b>Biz</b><small data-i18n="brand.tag">Rrjeti i Bizneseve Shqiptare në Irlandë</small></span>
+      </a>
+      <div class="header-spacer"></div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang="sq" aria-pressed="true">SQ</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="btn btn-primary btn-sm cta-header" href="/regjistro" data-link data-i18n="nav.register">Regjistro biznesin</a>
+    </div>
+  </header>
+
+  <main id="main"><div class="spinner" aria-label="Loading"></div></main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div style="flex:1 1 280px">
+        <div class="footer-brand">
+          <svg class="mark" viewBox="0 0 48 48" aria-hidden="true">
+            <path fill="#1C1B19" d="M24 5 7 41h8.4l3.05-6.8h11.1L32.6 41H41L24 5Zm-2.4 21.6L24 17.9l2.4 8.7h-4.8Z"/>
+            <path fill="#C8102E" d="M24 5l4.2 8.9a10 10 0 0 1-8.4 0L24 5Z"/>
+          </svg>
+          <span>AlbaBiz.ie</span>
+        </div>
+        <p data-i18n="footer.about" style="margin-top:10px;max-width:42ch">AlbaBiz.ie është projekt i Shoqatës Kulturore Shqiptare në Irlandë (ACAI).</p>
+      </div>
+      <nav aria-label="Footer">
+        <strong data-i18n="footer.links">Lidhje</strong>
+        <a href="/" data-link data-i18n="nav.home">Ballina</a>
+        <a href="/regjistro" data-link data-i18n="nav.register">Regjistro biznesin</a>
+        <a href="/hiq" data-link data-i18n="nav.removal">Kërkesë për heqje</a>
+        <a href="/privatesia" data-i18n="nav.privacy">Privatësia</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS (deferred; map view loads it lazily anyway) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <script src="/config.js"></script>
+  <script src="/icons.js"></script>
+  <script src="/metrics.js"></script>
+  <script src="/i18n.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Security + caching headers for Cloudflare Pages.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+
+# Core UI files: always revalidate so a deploy reaches everyone immediately
+# (and the Android WebView always pulls the latest UI). ETag makes this cheap —
+# unchanged files return 304, not a full re-download. No more "stale for an hour
+# after a fix" trap.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+/styles.css
+  Cache-Control: public, max-age=0, must-revalidate
+/app.js
+  Cache-Control: public, max-age=0, must-revalidate
+/admin/app.js
+  Cache-Control: public, max-age=0, must-revalidate
+/i18n.js
+  Cache-Control: public, max-age=0, must-revalidate
+/icons.js
+  Cache-Control: public, max-age=0, must-revalidate
+/metrics.js
+  Cache-Control: public, max-age=0, must-revalidate
+/config.js
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Fonts are content-hashed in practice (rarely change) — safe to cache long.
+/fonts/*
+  Cache-Control: public, max-age=2592000, immutable

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark-mode variant. The WebView UI itself is light; this just keeps the
+         system chrome/background sensible at night. -->
+    <style name="Theme.AlbaBiz" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorAccent">@color/red</item>
+        <item name="android:windowBackground">#111114</item>
+    </style>
+</resources>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AlbaBiz Admin</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="/styles.css" />
+  <link rel="stylesheet" href="/admin/styles.css" />
+</head>
+<body class="admin">
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/admin/"><span class="dot" aria-hidden="true"></span><span>AlbaBiz<small>Admin · ACAI</small></span></a>
+      <div class="header-spacer"></div>
+      <span id="who" class="who"></span>
+      <button id="signout" class="btn btn-ghost btn-sm" hidden>Sign out</button>
+    </div>
+  </header>
+
+  <!-- Gate: only shown if the API rejects us (i.e. Access not in front + no token yet). -->
+  <section id="gate" class="container gate" hidden>
+    <div class="form-section" style="max-width:480px;margin:48px auto">
+      <h2 style="margin-top:0">Admin sign-in</h2>
+      <p class="hint" id="gate-hint">
+        This area is meant to sit behind Cloudflare Access. On a <code>*.workers.dev</code> API
+        (no custom domain yet), paste the <code>ADMIN_BREAKGLASS</code> token instead.
+      </p>
+      <form id="gate-form">
+        <div class="form-row">
+          <label for="token">Admin token</label>
+          <input id="token" type="password" autocomplete="off" placeholder="ADMIN_BREAKGLASS value" />
+        </div>
+        <button class="btn btn-primary" type="submit">Enter</button>
+        <span id="gate-err" class="gate-err"></span>
+      </form>
+    </div>
+  </section>
+
+  <main id="app" class="container" hidden>
+    <nav id="tabs" class="tabs" aria-label="Admin sections">
+      <button class="tab-btn" data-tab="pending" aria-current="true">Pending <span id="pending-count" class="pill"></span></button>
+      <button class="tab-btn" data-tab="all">All businesses</button>
+      <button class="tab-btn" data-tab="metrics">Metrics</button>
+      <button class="tab-btn" data-tab="categories">Categories</button>
+      <button class="tab-btn" data-tab="counties">Counties</button>
+      <button class="tab-btn" data-tab="removals">Removals <span id="removals-count" class="pill"></span></button>
+      <button class="tab-btn" data-tab="export">Export</button>
+    </nav>
+    <div id="tab-body"><div class="spinner"></div></div>
+  </main>
+
+  <!-- Edit modal -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2 id="modal-title">Edit business</h2>
+        <button id="modal-close" class="btn btn-ghost btn-sm">✕</button>
+      </div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script src="/config.js"></script>
+  <script src="/admin/app.js"></script>
+</body>
+</html>

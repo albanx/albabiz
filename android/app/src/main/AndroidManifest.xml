@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Logo upload from the submission form: open the gallery/camera picker.
+         READ_MEDIA_IMAGES (33+) is requested at runtime by the system file
+         chooser; no broad storage permission is declared. -->
+
+    <application
+        android:name=".AlbaBizApp"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:usesCleartextTraffic="false"
+        android:theme="@style/Theme.AlbaBiz.Splash">
+
+        <activity
+            android:name=".web.MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden|uiMode|smallestScreenSize|screenLayout"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.AlbaBiz.Splash">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <!-- Deep links: open albabiz.pages.dev (and the future albabiz.ie)
+                 links inside the app. Update the host when the custom domain
+                 goes live. -->
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="albabiz.pages.dev" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

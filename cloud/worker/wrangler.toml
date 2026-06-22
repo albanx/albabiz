@@ -1,0 +1,61 @@
+name = "albabiz-api"
+main = "src/index.js"
+compatibility_date = "2026-05-01"
+
+# Endpoint will be https://albabiz-api.<account-subdomain>.workers.dev once you
+# enable the workers.dev subdomain (Dashboard → Workers & Pages → Subdomain).
+workers_dev = true
+
+# ---------------------------------------------------------------------------
+# D1 — the primary database (businesses, categories, counties, submissions...).
+# Create it once, then paste the printed database_id here:
+#   npx wrangler d1 create albabiz-db
+# Apply schema + seed:
+#   npx wrangler d1 execute albabiz-db --remote --file=migrations/0001_init.sql
+#   npx wrangler d1 execute albabiz-db --remote --file=migrations/0002_seed.sql
+# ---------------------------------------------------------------------------
+[[d1_databases]]
+binding = "DB"
+database_name = "albabiz-db"
+database_id = "9eabeb32-7a89-4265-9e1a-e266b00e02b3"
+
+# ---------------------------------------------------------------------------
+# R2 — object storage for business logos. Create once:
+#   npx wrangler r2 bucket create albabiz-logos
+# Logos are served back through the Worker at GET /img/<key> (no public bucket
+# needed), so we don't depend on an R2 public domain for v1.
+#
+# ⚠ DO NOT rename `binding` to match the bucket. `binding` is the variable name
+#   the Worker code uses — it MUST stay "LOGOS" (see env.LOGOS in src/index.js
+#   handleSubmit + handleImage). Only `bucket_name` must equal the real bucket.
+# ---------------------------------------------------------------------------
+[[r2_buckets]]
+binding = "LOGOS"
+bucket_name = "albabiz-logos"
+
+# ---------------------------------------------------------------------------
+# Public, non-secret vars.
+#   ACCESS_TEAM_DOMAIN / ACCESS_AUD configure admin JWT verification. They are
+#   NOT secret (the AUD tag and team domain are safe to expose), but they must
+#   match the Cloudflare Access application you create for /admin. Fill them in
+#   AFTER you create the Access app (see README → "Cloudflare Access").
+#   Leave ACCESS_AUD empty during early local dev to use DEV_ADMIN_BYPASS.
+# ---------------------------------------------------------------------------
+[vars]
+APP_NAME = "AlbaBiz.ie"
+# Allowed browser origins for CORS (comma-separated). Add your custom domain
+# later, e.g. "https://albabiz.pages.dev,https://albabiz.ie".
+ALLOWED_ORIGINS = "https://albabiz.pages.dev,http://localhost:8788,http://127.0.0.1:8788"
+# Cloudflare Access — set these once the Access app exists:
+ACCESS_TEAM_DOMAIN = ""   # e.g. "acai.cloudflareaccess.com"
+ACCESS_AUD = ""           # the Application Audience (AUD) tag from the Access app
+
+# ---------------------------------------------------------------------------
+# Secrets — NEVER put these here. Set with `wrangler secret put NAME`:
+#   TURNSTILE_SECRET     — Cloudflare Turnstile secret key (server-side verify).
+#   ADMIN_BREAKGLASS     — (optional) Bearer fallback if you ever need scripted
+#                          admin access outside Access. Leave unset to disable.
+# For LOCAL dev only, copy .dev.vars.example -> .dev.vars (gitignored) and set:
+#   DEV_ADMIN_BYPASS=1    — treats every /api/admin/* call as authed as
+#                           dev@localhost. NEVER set this in production vars.
+# ---------------------------------------------------------------------------

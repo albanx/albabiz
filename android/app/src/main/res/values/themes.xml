@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base app theme (AppCompat, light). -->
+    <style name="Theme.AlbaBiz" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red_dark</item>
+        <item name="colorAccent">@color/red</item>
+        <item name="android:windowBackground">@color/bg</item>
+    </style>
+
+    <!-- Splash theme: applied to the launcher activity. Uses the androidx
+         core-splashscreen API (works back to API 24). The app icon sits on a
+         flag-red background; the activity swaps to Theme.AlbaBiz after launch. -->
+    <style name="Theme.AlbaBiz.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.AlbaBiz</item>
+    </style>
+</resources>

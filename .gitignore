@@ -1,0 +1,25 @@
+# Root .gitignore for AlbaBiz.ie
+
+# Node / Worker
+node_modules/
+.wrangler/
+cloud/worker/.dev.vars
+cloud/worker/.dev.vars.local
+
+# Generated import SQL
+import.sql
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/keystore/
+android/.idea/
+*.iml
+
+# OS / editor
+.DS_Store
+*.log
+.idea/
+.vscode/

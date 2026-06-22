@@ -1,0 +1,18 @@
+# Normalize line endings: store everything as LF in the repo, check out native.
+# Stops the CRLF<->LF churn on Windows and keeps diffs clean across machines/CI.
+* text=auto eol=lf
+
+# Binary files — never touch line endings.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.woff2 binary
+*.jar  binary
+*.aab  binary
+*.apk  binary
+*.jks  binary
+*.keystore binary
+
+# Gradle wrapper script must stay executable + LF.
+gradlew text eol=lf
