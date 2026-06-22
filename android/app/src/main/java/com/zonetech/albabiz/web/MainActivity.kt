@@ -86,18 +86,14 @@ class MainActivity : AppCompatActivity() {
             swipe.isEnabled = web.scrollY == 0
         }
 
-        // Hardware back: ask the web UI first, then WebView history, then exit.
+        // Hardware back: walk the WebView history (which tracks every SPA
+        // pushState route) until there's nothing left, then exit the app. The
+        // WebView's own history is the single source of truth — no JS bridge —
+        // so back navigates through every visited page in order, then finish().
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                web.evaluateJavascript(
-                    "(window.albabizOnBack && window.albabizOnBack()) ? '1':'0'"
-                ) { res ->
-                    val handled = res?.trim('"') == "1"
-                    if (!handled) {
-                        if (web.canGoBack()) web.goBack()
-                        else finish()
-                    }
-                }
+                if (web.canGoBack()) web.goBack()
+                else finish()
             }
         })
 

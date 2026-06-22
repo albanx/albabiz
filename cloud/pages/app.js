@@ -157,7 +157,6 @@
     const hero = el('section', { class: 'hero' }, [
       el('div', { class: 'container' }, [
         el('div', { class: 'hero-inner' }, [
-          el('span', { class: 'eyebrow' }, [ic('sparkles'), document.createTextNode('ACAI')]),
           el('h1', { text: t('home.title') }),
           el('p', { text: t('home.subtitle') }),
           buildSearchBar(),
@@ -516,8 +515,8 @@
       fieldRow({ name: 'name', label: t('form.name'), required: true, maxlength: 200 }),
       fieldRow({ name: 'owner_name', label: t('form.owner'), hint: t('form.ownerHint'), maxlength: 200 }),
       el('div', { class: 'form-row' }, [
-        el('label', { html: esc(t('form.categories')) }),
-        el('div', { id: 'cats', class: 'checks' }, [spinner()]),
+        el('label', { for: 'category', html: esc(t('form.categories')) + ' <span class="req">*</span>' }),
+        el('select', { id: 'category', name: 'category_single' }, [el('option', { value: '', text: t('form.selectCategory') })]),
       ]),
       fieldRow({ name: 'description_sq', label: t('form.descSq'), textarea: true }),
       fieldRow({ name: 'description_en', label: t('form.descEn'), textarea: true }),
@@ -578,12 +577,10 @@
     api('/api/counties').then((d) => (d.counties || []).forEach((c) =>
       countySelect.appendChild(el('option', { value: c.slug, text: window.I18N.name(c) })))).catch(() => {});
     api('/api/categories').then((d) => {
-      const box = document.getElementById('cats'); clear(box);
-      (d.categories || []).forEach((c) => box.appendChild(el('label', { class: 'check' }, [
-        el('input', { type: 'checkbox', name: 'categories', value: c.id }),
-        ic(catIcon(c.slug)),
-        el('span', { text: window.I18N.name(c) }),
-      ])));
+      const sel = document.getElementById('category');
+      if (!sel) return;
+      (d.categories || []).forEach((c) =>
+        sel.appendChild(el('option', { value: c.id, text: window.I18N.name(c) })));
     }).catch(() => {});
     loadTurnstile();
 
@@ -599,6 +596,10 @@
       // normalize checkboxes to explicit booleans the Worker expects
       fd.set('gdpr_consent', 'true');
       fd.set('show_contact', form.querySelector('[name=show_contact]').checked ? 'true' : 'false');
+      // single category dropdown -> the Worker's `categories` field (comma list)
+      const catSel = form.querySelector('[name=category_single]');
+      fd.delete('category_single');
+      if (catSel && catSel.value) fd.set('categories', catSel.value);
       // turnstile token (widget injects a hidden input named cf-turnstile-response)
       submitBtn.disabled = true; submitBtn.textContent = t('form.sending');
       try {
