@@ -7,6 +7,12 @@
 
 @import url('/fonts/fonts.css');
 
+/* The HTML `hidden` attribute must always win. Layout classes like `.modal`
+ * (display:flex) and `.btn` (display:inline-flex) otherwise override the
+ * browser's default `[hidden]{display:none}`, leaving e.g. the admin edit
+ * modal stuck open over the whole page. Keep this guard first. */
+[hidden] { display: none !important; }
+
 :root {
   /* Palette */
   --paper: #faf7f2;        /* warm cream page background */

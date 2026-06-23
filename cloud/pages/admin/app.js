@@ -50,7 +50,7 @@
     var resp = await fetch(API + path, init);
     var txt = await resp.text();
     var body = null; try { body = txt ? JSON.parse(txt) : null; } catch (e) { body = { raw: txt }; }
-    if (resp.status === 401 || resp.status === 403) { showGate(); throw new Error(body && body.error || 'unauthorized'); }
+    if (resp.status === 401 || resp.status === 403 || resp.status === 503) { showGate(); throw new Error(body && body.error || 'unauthorized'); }
     if (!resp.ok) throw new Error(body && body.error || ('http_' + resp.status));
     return body;
   }

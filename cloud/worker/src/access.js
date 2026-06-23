@@ -75,14 +75,25 @@ export async function verifyAccess(request, env) {
   if (env.DEV_ADMIN_BYPASS) {
     return { ok: true, email: 'dev@localhost', via: 'dev-bypass' };
   }
-  if (env.ADMIN_BREAKGLASS) {
+
+  const hasBreakglass = !!env.ADMIN_BREAKGLASS;
+  const hasAccess = !!(env.ACCESS_TEAM_DOMAIN && env.ACCESS_AUD);
+
+  if (hasBreakglass) {
     const h = request.headers.get('Authorization') || '';
     if (h === `Bearer ${env.ADMIN_BREAKGLASS}`) {
       return { ok: true, email: 'breakglass@albabiz', via: 'breakglass' };
     }
   }
 
-  if (!env.ACCESS_TEAM_DOMAIN || !env.ACCESS_AUD) {
+  if (!hasAccess) {
+    // Cloudflare Access isn't configured. If break-glass IS the active auth
+    // mode, a missing/incorrect token is a normal 401 (the client shows the
+    // sign-in gate) — NOT a 503. Only report "not configured" when there is
+    // genuinely no auth method at all.
+    if (hasBreakglass) {
+      return { ok: false, status: 401, error: 'unauthorized' };
+    }
     return { ok: false, status: 503, error: 'access_not_configured' };
   }
 
