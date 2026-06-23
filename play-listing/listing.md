@@ -42,36 +42,41 @@ AlbaBiz.ie is run by the Albanian Cultural Association Ireland (ACAI) to support
 and connect the Albanian community and its businesses across Ireland.
 ```
 
-**App icon:** ✅ `play-listing/icon-512.png` (512×512, flat) — generated from the
-AI brand art (white "A" + red keystone on flag-red). Also wired into the site
-favicons (`cloud/pages/icons/`) and Android launcher.
+**App icon:** ✅ `play-listing/icon-512.png` (512×512, flat) — the **AB monogram**
+(cream "A" + gold "B" on flag-red), matching the Android launcher and the site
+favicons (`cloud/pages/icons/`).
 
 **Feature graphic:** ✅ `play-listing/feature-1024x500.png` — warm cream banner
-with the "A" mark + Irish line-art (hills, road, shamrocks, harp, dolmen) and an
-Albanian eagle crest.
+with the AB monogram badge, the "AlbaBiz.ie" serif wordmark, the
+"Albanian Business Network Ireland" tagline, a gold underline and a faint Celtic
+line-art motif.
 
 ---
 
 ## Screenshots (required: 2–8 phone screenshots, min 320px, 16:9 or 9:16)
 
-Capture on a phone/emulator running the debug build:
+✅ Captured on the Samsung Galaxy S10 (1080×2280), current AB brand:
 
-1. **Home / directory** — hero + search + card grid (show a few businesses).
-2. **Map view** — toggle to map with pins.
-3. **Business detail** — a rich profile (logo, contact, categories).
-4. **Search/filter** — category chips + county filter active.
-5. **Register form** — the submission form (shows native value + file upload).
-6. *(optional)* **Albanian UI** — same screen with SQ toggle, to show bilingual.
+1. `screenshots/01-home.png` — **Home / directory** (SQ): hero, search, category
+   chips, "8 biznese", List/Map toggle, featured card.
+2. `screenshots/02-grid.png` — **Card grid**: featured restaurant + more cards
+   with category icons, bilingual descriptions.
+3. `screenshots/03-detail.png` — **Business detail**: profile with About,
+   Categories, Location panels and the "Kthehu te regjistri" breadcrumb.
+4. `screenshots/04-register.png` — **Register form**: the "Logo & të tjera"
+   section showing the **camera-first** logo upload + "Or choose from gallery"
+   fallback, GDPR consent and the Turnstile anti-spam check (native value).
+5. `screenshots/05-home-en.png` — **English UI**: same home in English, proving
+   the bilingual toggle.
 
-Tip: seed a handful of approved businesses first (submit via the form, approve in
-`/admin`) so screenshots aren't empty.
+(All 1080×2280 PNG. A map-view shot is optional and can be added later.)
 
 ---
 
 ## Required URLs
 
-- **Privacy policy URL** (mandatory): `https://albabiz.pages.dev/privatesia.html`
-  (or `https://albabiz.ie/privatesia.html` once the domain is live).
+- **Privacy policy URL** (mandatory): `https://albabiz.pages.dev/privatesia`
+  (resolves 200, bilingual; or `https://albabiz.ie/privatesia` once the domain is live).
 - **Support email:** `info@acaireland.ie` (ACAI).
 - **Website:** `https://albabiz.pages.dev` (→ `https://albabiz.ie`).
 
@@ -79,12 +84,12 @@ Tip: seed a handful of approved businesses first (submit via the form, approve i
 
 ## Pre-launch checklist
 
-- [ ] Release AAB signed with the upload key (`./gradlew :app:bundleRelease`).
-- [ ] `UI_BASE` / `API_BASE` point at the real deployment.
-- [ ] Privacy policy URL resolves and is bilingual.
+- [x] Release AAB signed with the upload key (`android/app/build/outputs/bundle/release/app-release.aab`, 1.4 MB, signer `CN=AlbaBiz.ie`).
+- [x] `UI_BASE` / `API_BASE` point at the real deployment.
+- [x] Privacy policy URL resolves and is bilingual.
 - [ ] Data safety form completed (see `data-safety.md`).
 - [ ] Content rating questionnaire completed (see `content-rating.md`).
-- [ ] At least 4 screenshots + feature graphic + 512 icon uploaded.
+- [x] 5 screenshots + feature graphic + 512 icon ready (all current AB brand).
 - [x] Privacy contact email in `privatesia.html` set to `info@acaireland.ie` (ACAI).
 - [ ] Target audience: **18+ / general** (no child-directed content).
 
