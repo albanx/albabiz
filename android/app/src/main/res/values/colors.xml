@@ -5,6 +5,8 @@
     <color name="ink">#1C1B19</color>
     <color name="muted">#807A70</color>
     <color name="bg">#FAF7F2</color>
-    <color name="splash_bg">#C8102E</color>
-    <color name="ic_launcher_background">#C8102E</color>
+    <!-- Matches the exact red of the AB monogram tile (assets/generated/ab-1.png),
+         so the scaled adaptive foreground + circular splash badge seam is invisible. -->
+    <color name="splash_bg">#BA1324</color>
+    <color name="ic_launcher_background">#BA1324</color>
 </resources>
