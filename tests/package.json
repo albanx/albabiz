@@ -1,0 +1,20 @@
+{
+  "name": "albabiz-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Playwright end-to-end tests for the AlbaBiz.ie web app (home, business registration, admin panel).",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:home": "playwright test e2e/home.spec.js",
+    "test:register": "playwright test e2e/register.spec.js",
+    "test:admin": "playwright test e2e/admin.spec.js",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install chromium"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.1"
+  }
+}
