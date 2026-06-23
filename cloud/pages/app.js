@@ -551,11 +551,34 @@
     ]);
 
     // Media + consent
+    // Logo input is camera-first on mobile (`capture=environment` opens the rear
+    // camera). Because a logo is often an existing image — and some mobile
+    // browsers treat `capture` as camera-ONLY — we offer a "from gallery"
+    // fallback that drops `capture` for one pick, then restores it.
+    const logoInput = el('input', {
+      id: 'logo', name: 'logo', type: 'file',
+      accept: 'image/png,image/jpeg,image/webp',
+      capture: 'environment',
+    });
+    const galleryBtn = el('button', {
+      type: 'button', class: 'btn btn-ghost btn-sm', style: 'margin-top:8px',
+      onclick: () => {
+        logoInput.removeAttribute('capture');     // this pick: let them browse
+        logoInput.click();
+        // Restore camera-first once the picker closes (window regains focus).
+        window.addEventListener('focus', function restore() {
+          logoInput.setAttribute('capture', 'environment');
+        }, { once: true });
+      },
+      text: t('form.logoGallery'),
+    });
     const sMedia = el('div', { class: 'form-section' }, [
       el('h2', {}, [ic('sparkles'), document.createTextNode(t('form.secMedia'))]),
       el('div', { class: 'form-row' }, [
         el('label', { for: 'logo', html: esc(t('form.logo')) }),
-        el('input', { id: 'logo', name: 'logo', type: 'file', accept: 'image/png,image/jpeg,image/webp' }),
+        logoInput,
+        el('div', { class: 'hint', text: t('form.logoCameraHint') }),
+        galleryBtn,
       ]),
       el('div', { class: 'form-row' }, [
         el('label', { class: 'consent' }, [
