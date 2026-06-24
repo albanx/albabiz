@@ -56,20 +56,79 @@
   }
 
   // ---- gate ---------------------------------------------------------------
-  function showGate() {
+  function showGate(errMsg) {
     $('#app').hidden = true; $('#gate').hidden = false;
     $('#signout').hidden = true;
+    setGateError(errMsg);
+    setGateBusy(false);
+    var t = $('#token');
+    if (t) { setTimeout(function () { t.focus(); if (errMsg) t.select(); }, 30); }
   }
   function showApp() {
     $('#gate').hidden = true; $('#app').hidden = false;
     $('#signout').hidden = !token();
   }
-  $('#gate-form').addEventListener('submit', function (e) {
+  function setGateError(msg) {
+    var box = $('#gate-err');
+    if (!box) return;
+    if (msg) { box.textContent = msg; box.hidden = false; }
+    else { box.textContent = ''; box.hidden = true; }
+  }
+  function setGateBusy(on) {
+    var btn = $('#gate-submit'); var inp = $('#token');
+    if (btn) { btn.disabled = on; btn.textContent = on ? 'Checking…' : 'Enter'; }
+    if (inp) inp.disabled = on;
+  }
+  // Map a failed probe to a human message (the token field is the only input).
+  function gateMessageFor(err) {
+    var e = (err && err.message) || '';
+    if (e === 'unauthorized' || e === 'invalid_token' || /^http_40[13]$/.test(e)) {
+      return 'That token wasn’t accepted. Check it and try again.';
+    }
+    if (e === 'access_not_configured' || e === 'http_503') {
+      return 'Admin auth isn’t configured on the server yet.';
+    }
+    if (/Failed to fetch|NetworkError|load failed/i.test(e)) {
+      return 'Couldn’t reach the server. Check your connection and retry.';
+    }
+    return 'Sign-in failed. Please try again.';
+  }
+
+  // Reveal / hide the token.
+  (function () {
+    var rev = $('#token-reveal');
+    if (!rev) return;
+    rev.addEventListener('click', function () {
+      var inp = $('#token'); if (!inp) return;
+      var show = inp.type === 'password';
+      inp.type = show ? 'text' : 'password';
+      rev.setAttribute('aria-pressed', show ? 'true' : 'false');
+      rev.setAttribute('aria-label', show ? 'Hide token' : 'Show token');
+      rev.classList.toggle('on', show);
+      inp.focus();
+    });
+  })();
+
+  $('#gate-form').addEventListener('submit', async function (e) {
     e.preventDefault();
-    var v = $('#token').value.trim();
-    if (!v) return;
+    var inp = $('#token');
+    var v = (inp.value || '').trim();
+    setGateError('');
+    if (!v) { setGateError('Please paste your access token.'); inp.focus(); return; }
     sessionStorage.setItem(TOKEN_KEY, v);
-    boot();
+    setGateBusy(true);
+    // Verify the token with a real probe BEFORE entering, so a bad token shows
+    // a clear error instead of silently bouncing back to the gate.
+    try {
+      var d = await api('/api/admin/pending');
+      enterApp(d);
+    } catch (err) {
+      sessionStorage.removeItem(TOKEN_KEY); // don't keep a token we know is bad
+      $('#gate').hidden = false; $('#app').hidden = true;
+      setGateBusy(false);
+      setGateError(gateMessageFor(err));
+      if (inp) { inp.focus(); inp.select(); }
+    }
   });
   $('#signout').addEventListener('click', function () {
     sessionStorage.removeItem(TOKEN_KEY); showGate();
@@ -475,6 +534,14 @@
   }
 
   // ---- boot ---------------------------------------------------------------
+  function enterApp(d) {
+    showApp();
+    $('#pending-count').textContent = d.total || '';
+    $('#who').textContent = token() ? 'Signed in (token)' : 'Signed in (Access)';
+    var b = body(); clear(b);
+    if (!(d.businesses || []).length) b.appendChild(el('p', { class: 'state', text: 'No pending submissions 🎉' }));
+    else d.businesses.forEach(function (x) { b.appendChild(bizCard(x)); });
+  }
   async function boot() {
     if (!API || API.indexOf('YOUR-SUBDOMAIN') >= 0) {
       $('#gate').hidden = true; $('#app').hidden = true;
@@ -483,12 +550,7 @@
     }
     try {
       var d = await api('/api/admin/pending');
-      showApp();
-      $('#pending-count').textContent = d.total || '';
-      var b = body(); clear(b);
-      $('#who').textContent = token() ? 'Signed in (token)' : 'Signed in (Access)';
-      if (!(d.businesses || []).length) b.appendChild(el('p', { class: 'state', text: 'No pending submissions 🎉' }));
-      else d.businesses.forEach(function (x) { b.appendChild(bizCard(x)); });
+      enterApp(d);
     } catch (e) { /* showGate already called on 401/403 */ }
   }
   boot();

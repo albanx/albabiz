@@ -1,7 +1,69 @@
 /* AlbaBiz admin — minimal styling layered on top of the public design system. */
-.admin { background: var(--bg-soft); }
+.admin { background: var(--paper); }
 .who { color: var(--muted); font-size: .85rem; font-weight: 600; }
-.gate-err { color: var(--red-dark); font-weight: 600; margin-left: 10px; }
+
+/* ---- Sign-in gate ------------------------------------------------------- */
+.gate {
+  min-height: calc(100vh - 70px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px 18px;
+}
+.gate-card {
+  background: #fff; border: 1px solid var(--line); border-radius: 20px;
+  box-shadow: var(--shadow-hover); padding: 36px 32px 28px;
+  width: 100%; max-width: 420px; text-align: center;
+}
+.gate-badge {
+  width: 56px; height: 56px; margin: 0 auto 18px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--red); color: #fff;
+  box-shadow: 0 6px 18px rgba(200, 16, 46, .28);
+}
+.gate-badge svg { width: 26px; height: 26px; }
+.gate-card h2 { margin: 0 0 6px; font-family: var(--serif); font-weight: 600; font-size: 1.5rem; }
+.gate-sub { margin: 0 0 22px; color: var(--ink-soft); font-size: .92rem; }
+.gate-field { position: relative; text-align: left; margin-bottom: 14px; }
+.gate-field label {
+  display: block; font-size: .76rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .03em; color: var(--muted); margin-bottom: 6px;
+}
+.gate-field input {
+  width: 100%; box-sizing: border-box; padding: 13px 46px 13px 14px;
+  border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper);
+  font-size: 1rem; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ink); transition: border-color .15s, box-shadow .15s, background .15s;
+}
+.gate-field input::placeholder { font-family: var(--sans, system-ui); color: var(--muted); }
+.gate-field input:focus {
+  outline: none; border-color: var(--red); background: #fff;
+  box-shadow: 0 0 0 3px rgba(200, 16, 46, .14);
+}
+.gate-field input:disabled { opacity: .6; }
+.gate-reveal {
+  position: absolute; right: 6px; bottom: 6px; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; padding: 0;
+  border: none; background: transparent; color: var(--muted); cursor: pointer;
+  border-radius: 8px; transition: color .15s, background .15s;
+}
+.gate-reveal:hover { color: var(--ink); background: var(--paper); }
+.gate-reveal.on { color: var(--red); }
+.gate-reveal svg { width: 19px; height: 19px; }
+.gate-btn { width: 100%; min-height: 46px; font-size: 1rem; }
+.gate-btn:disabled { opacity: .7; cursor: progress; }
+.gate-err {
+  display: flex; align-items: flex-start; gap: 8px; text-align: left;
+  background: #fdecec; border: 1px solid #f3c2c2; color: var(--red-deep);
+  font-size: .86rem; font-weight: 600; border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 14px;
+}
+.gate-note {
+  margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line);
+  color: var(--muted); font-size: .76rem; line-height: 1.5; text-align: left;
+}
+.gate-note code {
+  background: var(--paper); border: 1px solid var(--line); border-radius: 5px;
+  padding: 1px 5px; font-size: .92em;
+}
 
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 22px 0 18px; }
 .tab-btn {
@@ -16,7 +78,7 @@
   background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px;
   box-shadow: var(--shadow); margin-bottom: 14px; display: flex; gap: 16px; align-items: flex-start;
 }
-.admin-card .thumb { width: 64px; height: 64px; border-radius: 10px; background: var(--bg-soft); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.admin-card .thumb { width: 64px; height: 64px; border-radius: 10px; background: var(--paper); flex: 0 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .admin-card .thumb img { width: 100%; height: 100%; object-fit: cover; }
 .admin-card .grow { flex: 1; min-width: 0; }
 .admin-card h3 { margin: 0 0 4px; font-size: 1.05rem; }
@@ -25,16 +87,16 @@
 .status { font-size: .72rem; font-weight: 800; text-transform: uppercase; border-radius: 999px; padding: 3px 9px; }
 .status.pending { background: #fff4e0; color: #9a6700; }
 .status.approved { background: #e8f6ee; color: var(--ok); }
-.status.rejected { background: #fdecec; color: var(--red-dark); }
+.status.rejected { background: #fdecec; color: var(--red-deep); }
 .status.removed { background: #eee; color: #666; }
 
 .btn-approve { background: var(--ok); color: #fff; }
-.btn-reject { background: #fff; color: var(--red-dark); border-color: #f3c2c2; }
+.btn-reject { background: #fff; color: var(--red-deep); border-color: #f3c2c2; }
 .btn-danger { background: var(--red); color: #fff; }
 
 table.admin-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
 table.admin-table th, table.admin-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); font-size: .9rem; }
-table.admin-table th { background: var(--bg-soft); font-size: .76rem; text-transform: uppercase; color: var(--muted); }
+table.admin-table th { background: var(--paper); font-size: .76rem; text-transform: uppercase; color: var(--muted); }
 
 .modal { position: fixed; inset: 0; background: rgba(10,10,15,.45); display: flex; align-items: flex-start; justify-content: center; padding: 24px; z-index: 300; overflow: auto; }
 .modal-card { background: #fff; border-radius: var(--radius); max-width: 720px; width: 100%; box-shadow: var(--shadow-hover); }
