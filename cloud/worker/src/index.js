@@ -13,7 +13,7 @@
  *   GET  /api/businesses/:slug
  *   GET  /api/categories
  *   GET  /api/counties
- *   POST /api/submit                       Turnstile + honeypot; multipart w/ logo -> R2; status='pending'
+ *   POST /api/submit                       Turnstile; multipart w/ logo -> R2; status='pending'
  *   POST /api/removal-request              GDPR self-service removal intake
  *   GET  /img/:key                         R2 logo proxy
  *
@@ -182,7 +182,7 @@ async function handleBusinessesList(request, env, url) {
        FROM businesses b
        LEFT JOIN counties co ON co.id = b.county_id
       WHERE ${whereSql}
-      ORDER BY b.is_featured DESC, b.name ASC
+      ORDER BY b.is_featured DESC, b.created_at DESC, b.id DESC
       LIMIT ? OFFSET ?`
   ).bind(...binds, pageSize, offset).all();
 
@@ -234,8 +234,7 @@ async function handleBusinessBySlug(request, env, slug) {
 /**
  * POST /api/submit — public business submission.
  * Accepts multipart/form-data (so the logo can ride along) OR application/json
- * (no logo). Anti-spam: Turnstile token + honeypot field `company_fax` (must be
- * empty). Writes status='pending'.
+ * (no logo). Anti-spam: Turnstile token. Writes status='pending'.
  */
 const LOGO_MAX_BYTES = 2 * 1024 * 1024; // 2 MB
 const LOGO_TYPES = new Set(['image/png', 'image/jpeg', 'image/webp']);
@@ -262,11 +261,6 @@ async function handleSubmit(request, env) {
     if (Array.isArray(fields.categories)) {
       categoryIds = fields.categories.map((n) => toIntOrNull(n)).filter((n) => n !== null);
     }
-  }
-
-  // Honeypot: real users never see/fill this. Pretend success to waste bots.
-  if (clampStr(fields.company_fax, 200)) {
-    return json({ ok: true, pending: true, id: null }, { status: 202, request, env });
   }
 
   // Turnstile
@@ -355,10 +349,6 @@ async function handleSubmit(request, env) {
 
 async function handleRemovalRequest(request, env) {
   const body = await request.json().catch(() => ({}));
-  // honeypot
-  if (clampStr(body.company_fax, 200)) {
-    return json({ ok: true, received: true }, { status: 202, request, env });
-  }
   const ip = request.headers.get('CF-Connecting-IP') || '';
   const ok = await verifyTurnstile(body['cf-turnstile-response'] || body.turnstile_token, ip, env);
   if (!ok) return json({ ok: false, error: 'turnstile_failed' }, { status: 403, request, env });

@@ -171,8 +171,7 @@ business via **Register your business**; it lands in the admin **Pending** queue
 4. Copy the **Secret key** → `wrangler secret put TURNSTILE_SECRET` (step 1c).
 
 The submission + removal forms render the widget; the Worker verifies it
-server-side. A hidden **honeypot** field (`company_fax`) catches dumb bots with
-zero user friction.
+server-side.
 
 ---
 
@@ -311,8 +310,8 @@ couldn't map.
 | GET | `/api/businesses/:slug` | – | single business (hides contact if opted out) |
 | GET | `/api/categories` / `/api/counties` | – | with live counts |
 | GET | `/api/config` | – | remote app config |
-| POST | `/api/submit` | Turnstile + honeypot | new submission (multipart w/ logo) |
-| POST | `/api/removal-request` | Turnstile + honeypot | GDPR removal intake |
+| POST | `/api/submit` | Turnstile | new submission (multipart w/ logo) |
+| POST | `/api/removal-request` | Turnstile | GDPR removal intake |
 | GET | `/img/:key` | – | R2 logo |
 | GET | `/api/admin/pending` · `/api/admin/businesses?status=` | Access/token | moderation lists |
 | POST | `/api/admin/approve` · `/api/admin/reject` · `/api/admin/feature` | Access/token | moderate |

@@ -7,7 +7,7 @@ applicationId: **com.zonetech.albabiz**  ·  Category: **Business**  ·  Free  �
 ## App details
 
 **App name (30 chars max):**
-`AlbaBiz.ie`
+`AlbaBiz`
 
 **Short description (80 chars max):**
 `Directory of Albanian-owned businesses in Ireland. Find, search & register.`
@@ -71,6 +71,23 @@ line-art motif.
 
 (All 1080×2280 PNG. A map-view shot is optional and can be added later.)
 
+### Tablet screenshots (optional but recommended — 7-inch & 10-inch slots)
+
+✅ Rendered from the live site in Chromium (the WebView engine) at true tablet
+viewports @2x, so they show the genuine responsive tablet layout (multi-column
+grid; two-column detail page). In `screenshots-tablet/`:
+
+**10-inch (1600×2560 portrait / 2560×1600 landscape):**
+- `10in-portrait-01-home.png`, `10in-portrait-02-detail.png`, `10in-portrait-03-register.png`
+- `10in-landscape-01-home.png` (3-column grid), `10in-landscape-02-detail.png`
+  (two-column profile: About/Categories/Location + Contact card), `10in-landscape-03-register.png`
+
+**7-inch (1200×1920 portrait):**
+- `7in-portrait-01-home.png`, `7in-portrait-02-detail.png`, `7in-portrait-03-register.png`
+
+Regenerate with `cd tests && node tablet-shots.mjs`. All within Play limits
+(320–3840 px per side; long side ≤ 2× short side).
+
 ---
 
 ## Required URLs
@@ -90,6 +107,7 @@ line-art motif.
 - [ ] Data safety form completed (see `data-safety.md`).
 - [ ] Content rating questionnaire completed (see `content-rating.md`).
 - [x] 5 screenshots + feature graphic + 512 icon ready (all current AB brand).
+- [x] 9 tablet screenshots (7-inch + 10-inch, portrait & landscape) in `screenshots-tablet/`.
 - [x] Privacy contact email in `privatesia.html` set to `info@acaireland.ie` (ACAI).
 - [ ] Target audience: **18+ / general** (no child-directed content).
 

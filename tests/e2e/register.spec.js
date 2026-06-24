@@ -59,10 +59,8 @@ test.describe('Business registration', () => {
     await expect.poll(async () => county.locator('option').count()).toBeGreaterThan(1);
   });
 
-  test('has an anti-spam honeypot and a Turnstile container', async ({ page }) => {
+  test('has a Turnstile anti-spam container', async ({ page }) => {
     await gotoRegister(page);
-    // Honeypot is visually hidden but in the DOM.
-    await expect(page.locator('#submit-form input[name=company_fax]')).toHaveCount(1);
     // Turnstile widget mount point with the public site key.
     const ts = page.locator('#submit-form .cf-turnstile');
     await expect(ts).toHaveCount(1);

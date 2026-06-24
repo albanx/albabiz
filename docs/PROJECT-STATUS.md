@@ -1,7 +1,7 @@
 # AlbaBiz.ie — Project Status & Deployment Record
 
 _A project of the Albanian Cultural Association Ireland (ACAI)._
-_Last updated: 2026-06-22 (v2 — editorial redesign + anonymous analytics)._
+_Last updated: 2026-06-24 (anti-spam simplified + newest-first ordering)._
 
 This document records everything that has been built and deployed, the live
 endpoints, the data model, and the operational commands. It is the single source
@@ -60,7 +60,7 @@ Base URL: `https://albabiz-api.albanx.workers.dev`
 | GET | `/api/categories` | – | `{ ok, categories:[{ slug, name_en, name_sq, icon, count }] }` |
 | GET | `/api/businesses` | `?county=&category=&q=&featured=1&page=&pageSize=` | `{ ok, businesses:[…], page, pageSize, total, total_pages }` |
 | GET | `/api/businesses/:slug` | – | `{ ok, business:{…} }` (contact fields omitted if `show_contact=0`; `owner_name` never returned) |
-| POST | `/api/submit` | multipart or JSON (see below) | `{ ok, pending:true, id }` — Turnstile + honeypot enforced |
+| POST | `/api/submit` | multipart or JSON (see below) | `{ ok, pending:true, id }` — Turnstile enforced |
 | POST | `/api/removal-request` | JSON `{ email, slug?, business_name?, reason?, 'cf-turnstile-response' }` | `{ ok, received:true }` |
 | POST | `/api/events` | JSON `{ events:[{type,...}] }` (anonymous, batched) | `{ ok, accepted }` |
 | GET | `/img/:key` | – | the R2 logo image |
@@ -70,7 +70,7 @@ Base URL: `https://albabiz-api.albanx.workers.dev`
 or comma list of category ids), `county` (slug or id), `town`, `address`,
 `phone`, `whatsapp`, `email`, `website`, `facebook`, `instagram`, `linkedin`,
 `logo` (file ≤2MB png/jpg/webp), `year_established`, `show_contact` (`true`/`false`),
-`gdpr_consent`* (`true`), `cf-turnstile-response`* , `company_fax` (honeypot — leave empty).
+`gdpr_consent`* (`true`), `cf-turnstile-response`* .
 \* required.
 
 ### Admin endpoints (Access JWT **or** `Authorization: Bearer <ADMIN_BREAKGLASS>`)
@@ -166,8 +166,8 @@ npx wrangler d1 execute albabiz-db --remote --file=migrations/0002_seed.sql
 - [x] Step 3 — `TURNSTILE_SECRET` + `ADMIN_BREAKGLASS` set
 - [x] Step 4 — Worker deployed (`albabiz-api.albanx.workers.dev`)
 - [x] Step 5 — Pages deployed (`albabiz.pages.dev`)
-- [ ] Turnstile widget hostnames include `albabiz.pages.dev`
-- [ ] Seed demo businesses (for screenshots / launch)
+- [x] Turnstile widget hostnames include `albabiz.pages.dev` (forms verified working)
+- [x] Seed demo businesses (8 live for screenshots / launch)
 - [x] Android `API_BASE` set to live Worker URL
 - [ ] Custom domain `albabiz.ie` (optional, enables full Cloudflare Access)
 - [x] UX overhaul + metrics (see `docs/UX-METRICS-PLAN.md`) — shipped v2
@@ -214,3 +214,24 @@ npx wrangler d1 execute albabiz-db --remote --file=migrations/0002_seed.sql
 **Still pending (nice-to-have, from the plan):** curated hero/landing stock
 photos + 15 bespoke category illustrations + a retention cron — deferred; the
 icon tiles + palette already make logo-less cards look intentional.
+
+---
+
+## 9. 2026-06-24 changelog (anti-spam + ordering)
+
+**Honeypot removed entirely.** The hidden `company_fax` field was being
+auto-filled by Android WebView autofill, so in-app submissions hit the
+"pretend success, don't insert" path → users saw "Faleminderit!" but nothing
+reached the pending queue. Removed the field from both forms (`app.js`), both
+Worker checks (`/api/submit`, `/api/removal-request`), the `.hp` CSS, the
+Playwright test, and all docs. **Turnstile is now the sole spam gate** —
+confirmed rendering + verifying inside the Android WebView.
+
+**Default directory ordering is now newest-first.** Public list changed from
+`ORDER BY is_featured DESC, name ASC` to
+`ORDER BY is_featured DESC, created_at DESC, id DESC` — featured stay pinned,
+then most-recently-created first. Proven live (fresh insert jumped to the top
+of the non-featured list).
+
+Both shipped: Worker + Pages redeployed and smoke-tested (no-token → 403;
+honeypot-filled payload → 403 instead of the old fake 202).

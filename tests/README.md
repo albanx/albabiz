@@ -5,7 +5,7 @@ Browser tests for the **web** parts of AlbaBiz.ie:
 | Spec | Covers |
 |------|--------|
 | `e2e/home.spec.js` | Landing/directory: hero, search, category chips, business cards, detail navigation, county filter, list/map toggle, empty state, SQ↔EN language toggle. |
-| `e2e/register.spec.js` | `/regjistro` form: all sections render, **single-select** category dropdown, county populate, honeypot + Turnstile mount, client-side validation (empty name, missing GDPR consent). |
+| `e2e/register.spec.js` | `/regjistro` form: all sections render, **single-select** category dropdown, county populate, Turnstile mount, client-side validation (empty name, missing GDPR consent). |
 | `e2e/admin.spec.js` | `/admin/` panel: sign-in gate appears, token field, wrong token stays gated, `noindex`. Optional signed-in flow when `ADMIN_TOKEN` is provided. |
 
 These run against a **deployed** site, because the front-end's API base is baked

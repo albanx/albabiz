@@ -18,6 +18,10 @@ android/keystore/
 android/.idea/
 *.iml
 
+# Signed app binaries — never commit (share out-of-band, not via git)
+*.apk
+*.aab
+
 # OS / editor
 .DS_Store
 *.log

@@ -491,11 +491,6 @@
 
     const form = el('form', { id: 'submit-form', enctype: 'multipart/form-data', novalidate: '' });
 
-    // honeypot
-    form.appendChild(el('div', { class: 'hp', 'aria-hidden': 'true' }, [
-      el('label', { text: 'Fax' }), el('input', { type: 'text', name: 'company_fax', tabindex: '-1', autocomplete: 'off' }),
-    ]));
-
     function fieldRow(opts) {
       const id = opts.name;
       const input = opts.textarea
@@ -661,7 +656,6 @@
     const msg = el('div', { id: 'rm-msg', 'aria-live': 'polite' });
     root.appendChild(msg);
     const form = el('form', { id: 'removal-form', novalidate: '' }, [
-      el('div', { class: 'hp', 'aria-hidden': 'true' }, [el('input', { type: 'text', name: 'company_fax', tabindex: '-1', autocomplete: 'off' })]),
       el('div', { class: 'form-section' }, [
         rowText('business_name', t('removal.business')),
         rowText('slug', t('removal.slug'), params.get('slug') || ''),
@@ -688,7 +682,6 @@
         slug: form.slug.value.trim(),
         email: form.email.value.trim(),
         reason: form.reason.value.trim(),
-        company_fax: form.company_fax.value,
         'cf-turnstile-response': (form.querySelector('[name=cf-turnstile-response]') || {}).value || '',
       };
       try {

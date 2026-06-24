@@ -246,7 +246,6 @@ h1, h2, h3, .serif { font-family: var(--serif); font-weight: 600; letter-spacing
 .consent { display: flex; gap: 12px; align-items: flex-start; background: var(--gold-wash); border: 1px solid #e7d4ad; border-radius: var(--radius-sm); padding: 16px; }
 .consent input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--red); flex: 0 0 auto; }
 .consent span { font-size: .9rem; color: var(--ink-soft); }
-.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---- Alerts ------------------------------------------------------------ */
 .alert { display: flex; align-items: flex-start; gap: 10px; border-radius: var(--radius-sm); padding: 14px 16px; margin: 16px 0; font-weight: 500; }
