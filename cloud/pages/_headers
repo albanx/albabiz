@@ -30,3 +30,10 @@
 # Fonts are content-hashed in practice (rarely change) — safe to cache long.
 /fonts/*
   Cache-Control: public, max-age=2592000, immutable
+
+# Android App Links verification. Google's verifier requires application/json
+# and a publicly fetchable file (no redirect). Keep it fresh so a fingerprint
+# change propagates immediately.
+/.well-known/assetlinks.json
+  Content-Type: application/json
+  Cache-Control: public, max-age=0, must-revalidate

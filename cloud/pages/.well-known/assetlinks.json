@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.zonetech.albabiz",
+      "sha256_cert_fingerprints": [
+        "81:D6:B5:8B:C8:DB:01:32:5D:54:33:31:6E:29:A2:EA:20:91:02:50:74:A2:AD:21:F5:1B:AB:FC:BB:D3:B2:03"
+      ]
+    }
+  }
+]
