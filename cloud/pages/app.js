@@ -327,6 +327,33 @@
     track('business_view', { slug: b.slug });
     setMeta(b.name + ' — AlbaBiz.ie', desc || (b.name + ' — ' + (b.county ? window.I18N.name(b.county) : 'Ireland')));
 
+    // Normalize a user-entered WEBSITE: bare domains (e.g. "example.ie") have no
+    // scheme and would otherwise resolve RELATIVE to /biznes/<slug>. Force an
+    // absolute https:// URL so the link opens the real external site.
+    function extUrl(u) {
+      if (!u) return u;
+      u = String(u).trim();
+      if (!u) return u;
+      if (/^[a-z][a-z0-9+.-]*:\/\//i.test(u)) return u; // already absolute (http/https/…)
+      return 'https://' + u.replace(/^\/+/, '');        // bare domain / //host
+    }
+    // Normalize a SOCIAL field, which owners often enter as a bare handle
+    // ("theleveldetailing" or "@theleveldetailing") rather than a full URL.
+    // Handles -> the platform profile URL; anything with a scheme or a path is
+    // treated as a URL and just made absolute.
+    var SOCIAL_BASE = {
+      facebook: 'https://facebook.com/', instagram: 'https://instagram.com/',
+      linkedin: 'https://www.linkedin.com/in/',
+    };
+    function socialUrl(kind, u) {
+      if (!u) return u;
+      u = String(u).trim().replace(/^@/, '');
+      if (!u) return u;
+      if (/^[a-z][a-z0-9+.-]*:\/\//i.test(u)) return u;    // already absolute
+      if (u.indexOf('/') >= 0) return 'https://' + u.replace(/^\/+/, ''); // host/path
+      return (SOCIAL_BASE[kind] || 'https://') + u;         // bare handle
+    }
+
     // JSON-LD LocalBusiness
     const ld = {
       '@context': 'https://schema.org', '@type': 'LocalBusiness',
@@ -335,7 +362,7 @@
     if (desc) ld.description = desc;
     if (b.logo) ld.image = API + b.logo;
     if (b.phone) ld.telephone = b.phone;
-    if (b.website) ld.sameAs = [b.website, b.facebook, b.instagram, b.linkedin].filter(Boolean);
+    if (b.website) ld.sameAs = [extUrl(b.website), socialUrl('facebook', b.facebook), socialUrl('instagram', b.instagram), socialUrl('linkedin', b.linkedin)].filter(Boolean);
     if (b.address || b.town || b.county) {
       ld.address = { '@type': 'PostalAddress', addressCountry: 'IE' };
       if (b.address) ld.address.streetAddress = b.address;
@@ -371,10 +398,10 @@
     if (b.phone) row('phone', t('detail.phone'), b.phone, 'tel:' + b.phone);
     if (b.whatsapp) row('whatsapp', t('detail.whatsapp'), b.whatsapp, 'https://wa.me/' + b.whatsapp.replace(/[^0-9]/g, ''), true);
     if (b.email) row('mail', t('detail.email'), b.email, 'mailto:' + b.email);
-    if (b.website) row('globe', t('detail.website'), b.website.replace(/^https?:\/\//, ''), b.website);
-    if (b.facebook) row('facebook', 'Facebook', 'Facebook', b.facebook, true);
-    if (b.instagram) row('instagram', 'Instagram', 'Instagram', b.instagram, true);
-    if (b.linkedin) row('linkedin', 'LinkedIn', 'LinkedIn', b.linkedin, true);
+    if (b.website) row('globe', t('detail.website'), b.website.replace(/^https?:\/\//, ''), extUrl(b.website));
+    if (b.facebook) row('facebook', 'Facebook', 'Facebook', socialUrl('facebook', b.facebook), true);
+    if (b.instagram) row('instagram', 'Instagram', 'Instagram', socialUrl('instagram', b.instagram), true);
+    if (b.linkedin) row('linkedin', 'LinkedIn', 'LinkedIn', socialUrl('linkedin', b.linkedin), true);
     if (!contactRows.length) contactRows.push(el('p', { class: 'section-sub', text: t('detail.contactHidden') }));
 
     const cats = (b.categories || []).map((c) =>
