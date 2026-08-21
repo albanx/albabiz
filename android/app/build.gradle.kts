@@ -5,14 +5,15 @@ plugins {
 
 android {
     namespace = "com.zonetech.albabiz"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.zonetech.albabiz"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        // Play requires targeting Android 16 (API 36) as of the 2026 policy.
+        targetSdk = 36
+        versionCode = 2
+        versionName = "1.0.1"
 
         // The Pages site the WebView loads, and the Worker API. The app can be
         // repointed at runtime via the Worker's /api/config (ui_base_override)
